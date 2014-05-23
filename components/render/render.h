@@ -108,6 +108,8 @@ namespace Render
     std::pair<size_t, size_t> getClickedTile(RenderLevel* level, size_t x, size_t y);
 
     void clear();
+
+	void* createTexture(const Cel::Colour Data[], size_t w, size_t h);
 }
 
 #endif

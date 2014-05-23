@@ -250,9 +250,30 @@ namespace Render
      
         colour = SDL_MapRGB( s->format, c.r, c.g, c.b );
       
-        pixmem32 = (Uint32*) s->pixels  + y + x;
+        pixmem32 = (Uint32*) s->pixels + y + x;
         *pixmem32 = colour;
     }
+
+	void* createTexture(const Cel::Colour Data[], size_t w, size_t h)
+	{
+		SDL_Surface* s = createTransparentSurface(w,h);
+		
+        for(size_t x = 0; x < w; x++)
+        {
+            for(size_t y = 0; y < h; y++)
+            {
+				const Cel::Colour& c = Data[y * w + x];
+				if(c.visible)
+					setpixel(s,x,y,c);
+            }
+        }
+
+		char buffer[32];
+		static int num = 0;
+		sprintf_s(buffer,"tile%03d.bmp",num++);
+		SDL_SaveBMP(s,buffer);
+		return s;
+	}
 
     void drawFrame(SDL_Surface* s, int start_x, int start_y, const Cel::CelFrame& frame)
     {
